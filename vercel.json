@@ -1,19 +1,12 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ],
-  "routes": [
     {
-      "src": "/auth/callback(.*)",
-      "dest": "/"
+      "source": "/auth/callback(.*)",
+      "destination": "/"
     },
     {
-      "src": "/dashboard(.*)",
-      "dest": "/"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/"
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }

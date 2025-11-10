@@ -52,10 +52,17 @@ export const useAuth = () => {
     // Use environment variable for redirect URL if available, otherwise use current origin
     const redirectTo = import.meta.env.VITE_REDIRECT_URL || window.location.origin
     
+    // Ensure no double slashes in the URL
+    const callbackUrl = redirectTo.endsWith('/') 
+      ? `${redirectTo}auth/callback` 
+      : `${redirectTo}/auth/callback`
+    
+    console.log('OAuth redirect URL:', callbackUrl)
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${redirectTo}/auth/callback`,
+        redirectTo: callbackUrl,
       },
     })
     return { data, error }

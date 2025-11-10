@@ -19,6 +19,7 @@ const OAuthCallbackHandler = () => {
     // Handle OAuth callback with hash parameters
     const handleOAuthCallback = async () => {
       console.log('OAuth callback received, location:', location)
+      console.log('Full URL:', window.location.href)
       
       if (location.hash) {
         try {
@@ -34,22 +35,48 @@ const OAuthCallbackHandler = () => {
           const refreshToken = hashParams.get('refresh_token')
           const expiresIn = hashParams.get('expires_in')
           const tokenType = hashParams.get('token_type')
+          const error = hashParams.get('error')
+          const errorDescription = hashParams.get('error_description')
 
           console.log('Extracted tokens:', { accessToken: !!accessToken, refreshToken: !!refreshToken })
+          console.log('Error info:', { error, errorDescription })
+
+          if (error) {
+            console.error('OAuth error:', error, errorDescription)
+            navigate('/login')
+            return
+          }
 
           if (accessToken && refreshToken) {
             console.log('Setting session with tokens...')
             
             // Set the session with the tokens
-            const { data, error } = await supabase.auth.setSession({
+            const { data, error: sessionError } = await supabase.auth.setSession({
               access_token: accessToken,
               refresh_token: refreshToken,
             })
 
-            console.log('Session set result:', { data, error })
+            console.log('Session set result:', { data, sessionError })
 
-            if (error) {
-              console.error('OAuth callback error:', error)
+            if (sessionError) {
+              console.error('OAuth callback error:', sessionError)
+              
+              // Fallback: Try to get user info directly
+              try {
+                const { data: userData } = await supabase.auth.getUser(accessToken)
+                console.log('User data from token:', userData)
+                
+                if (userData.user) {
+                  console.log('User authenticated via token, proceeding to dashboard')
+                  setTimeout(() => {
+                    navigate('/dashboard')
+                  }, 100)
+                  return
+                }
+              } catch (fallbackError) {
+                console.error('Fallback auth check failed:', fallbackError)
+              }
+              
               navigate('/login')
             } else if (data.session) {
               console.log('Successfully authenticated, redirecting to dashboard')
