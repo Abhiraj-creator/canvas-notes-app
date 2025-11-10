@@ -1,0 +1,431 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Light theme - white background, black text */
+  html.light {
+    color-scheme: light;
+  }
+  
+  html.light body {
+    background-color: #ffffff;
+    color: #000000;
+  }
+  
+  /* Dark theme - black background, white text */
+  html.dark {
+    color-scheme: dark;
+  }
+  
+  html.dark body {
+    background-color: #000000;
+    color: #ffffff;
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Excalidraw container - minimal overrides */
+.excalidraw-container {
+  height: 100vh !important;
+  width: 100vw !important;
+}
+
+/* Excalidraw Black & White Theme Overrides */
+.excalidraw {
+  --color-primary: #ffffff !important;
+  --color-primary-darker: #e5e5e5 !important;
+  --color-primary-darkest: #cccccc !important;
+  --color-primary-light: #ffffff !important;
+  --color-primary-lightest: #ffffff !important;
+  
+  /* Background colors - black/dark gray */
+  --color-bg-primary: #000000 !important;
+  --color-bg-primary-darker: #0a0a0a !important;
+  --color-bg-primary-darkest: #1a1a1a !important;
+  --color-bg-secondary: #1a1a1a !important;
+  --color-bg-tertiary: #2a2a2a !important;
+  
+  /* Text colors - white/light gray */
+  --color-text-primary: #ffffff !important;
+  --color-text-secondary: #cccccc !important;
+  --color-text-tertiary: #999999 !important;
+  
+  /* Border colors - gray */
+  --color-border-primary: #333333 !important;
+  --color-border-secondary: #444444 !important;
+  
+  /* Button colors - black/white */
+  --color-button-primary: #000000 !important;
+  --color-button-primary-hover: #1a1a1a !important;
+  --color-button-secondary: #2a2a2a !important;
+  --color-button-secondary-hover: #333333 !important;
+  
+  /* Remove all color accents */
+  --color-selection: #ffffff !important;
+  --color-selection-hover: #e5e5e5 !important;
+}
+
+/* Override Excalidraw UI elements to be monochrome */
+.excalidraw button,
+.excalidraw .ToolIcon,
+.excalidraw .ToolIcon_type_button {
+  color: #ffffff !important;
+  background-color: #1a1a1a !important;
+  border-color: #333333 !important;
+}
+
+.excalidraw button:hover,
+.excalidraw .ToolIcon:hover,
+.excalidraw .ToolIcon_type_button:hover {
+  background-color: #2a2a2a !important;
+  border-color: #444444 !important;
+}
+
+.excalidraw button:active,
+.excalidraw .ToolIcon:active,
+.excalidraw .ToolIcon_type_button:active {
+  background-color: #0a0a0a !important;
+}
+
+/* Toolbar and menu styling */
+.excalidraw .Toolbar,
+.excalidraw .App-menu {
+  background-color: #1a1a1a !important;
+  border-color: #333333 !important;
+}
+
+/* Property panel styling */
+.excalidraw .Island,
+.excalidraw .panelColumn {
+  background-color: #1a1a1a !important;
+  border-color: #333333 !important;
+  color: #ffffff !important;
+}
+
+/* Color picker - make it grayscale */
+.excalidraw .color-picker-content {
+  filter: grayscale(100%) !important;
+}
+
+/* Remove colorful swatches, make them grayscale */
+.excalidraw .color-picker-swatch {
+  filter: grayscale(100%) !important;
+}
+
+/* Canvas background */
+.excalidraw .canvas-container {
+  background-color: #000000 !important;
+}
+
+/* Input fields */
+.excalidraw input,
+.excalidraw textarea {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
+.excalidraw input:focus,
+.excalidraw textarea:focus {
+  border-color: #666666 !important;
+  background-color: #2a2a2a !important;
+}
+
+/* Dropdowns and selects */
+.excalidraw select {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
+/* Links */
+.excalidraw a {
+  color: #ffffff !important;
+}
+
+.excalidraw a:hover {
+  color: #cccccc !important;
+}
+
+/* Icons - ensure they're white/gray */
+.excalidraw svg {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Selected elements - white outline */
+.excalidraw .selected-element {
+  outline-color: #ffffff !important;
+}
+
+/* Remove any colored highlights */
+.excalidraw * {
+  --color-accent: #ffffff !important;
+  --color-accent-darker: #cccccc !important;
+  --color-accent-lighter: #ffffff !important;
+}
+
+/* Force all color swatches to be grayscale */
+.excalidraw .color-picker-swatch,
+.excalidraw .color-picker-swatch-active,
+.excalidraw [data-testid="color-swatch"] {
+  filter: grayscale(100%) !important;
+  -webkit-filter: grayscale(100%) !important;
+}
+
+/* Override any inline styles with colors */
+.excalidraw [style*="background-color"]:not([style*="rgb(0"]):not([style*="rgb(26"]):not([style*="rgb(42"]):not([style*="rgb(51"]):not([style*="rgb(102"]):not([style*="rgb(153"]):not([style*="rgb(204"]):not([style*="rgb(255"]):not([style*="rgba(0"]):not([style*="rgba(26"]):not([style*="rgba(42"]):not([style*="rgba(51"]):not([style*="rgba(102"]):not([style*="rgba(153"]):not([style*="rgba(204"]):not([style*="rgba(255"]) {
+  background-color: #1a1a1a !important;
+}
+
+/* Make all shapes and elements use white/gray colors */
+.excalidraw .element {
+  stroke: #ffffff !important;
+  fill: transparent !important;
+}
+
+/* Override Excalidraw's default color palette */
+.excalidraw .color-picker {
+  filter: grayscale(100%) !important;
+}
+
+/* Ensure toolbar icons are white */
+.excalidraw .ToolIcon__icon {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Property panel labels and text */
+.excalidraw .panelColumn label,
+.excalidraw .panelColumn span,
+.excalidraw .panelColumn div {
+  color: #ffffff !important;
+}
+
+/* Make all buttons monochrome */
+.excalidraw .button,
+.excalidraw button[type="button"] {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
+.excalidraw .button:hover,
+.excalidraw button[type="button"]:hover {
+  background-color: #2a2a2a !important;
+  border-color: #444444 !important;
+}
+
+
+/* Scrollbar styles - monochrome for both themes */
+html.light ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background-color: #000000;
+  border-radius: 4px;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background-color: #333333;
+}
+
+html.dark ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background-color: #1a1a1a;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background-color: #333333;
+  border-radius: 4px;
+}
+
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #444444;
+}
+
+/* Global Black & White Theme Overrides */
+* {
+  --color-primary: #ffffff;
+  --color-primary-hover: #cccccc;
+  --color-bg-primary: #000000;
+  --color-bg-secondary: #1a1a1a;
+  --color-bg-tertiary: #2a2a2a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-text-tertiary: #999999;
+  --color-border: #333333;
+  --color-border-hover: #444444;
+}
+
+/* Buttons - monochrome for both themes */
+html.light button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html.light button:hover {
+  background-color: #1a1a1a !important;
+  border-color: #1a1a1a !important;
+}
+
+html.light button:active {
+  background-color: #0a0a0a !important;
+}
+
+html.dark button {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
+html.dark button:hover {
+  background-color: #2a2a2a !important;
+  border-color: #444444 !important;
+}
+
+html.dark button:active {
+  background-color: #0a0a0a !important;
+}
+
+/* Input fields - monochrome for both themes */
+html.light input, html.light textarea, html.light select {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+html.light input:focus, html.light textarea:focus, html.light select:focus {
+  border-color: #000000 !important;
+  background-color: #f5f5f5 !important;
+  outline-color: #000000 !important;
+}
+
+html.dark input, html.dark textarea, html.dark select {
+  background-color: #1a1a1a !important;
+  color: #ffffff !important;
+  border-color: #333333 !important;
+}
+
+html.dark input:focus, html.dark textarea:focus, html.dark select:focus {
+  border-color: #666666 !important;
+  background-color: #2a2a2a !important;
+  outline-color: #666666 !important;
+}
+
+/* Links - monochrome for both themes */
+html.light a {
+  color: #000000 !important;
+}
+
+html.light a:hover {
+  color: #333333 !important;
+}
+
+html.dark a {
+  color: #ffffff !important;
+}
+
+html.dark a:hover {
+  color: #cccccc !important;
+}
+
+/* Cards and containers - light theme */
+html.light .bg-white, html.light .bg-gray-50, html.light .bg-primary-50, html.light .bg-primary-100 {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-gray-800, html.light .bg-gray-900, html.light .dark\:bg-gray-800, html.light .dark\:bg-gray-900 {
+  background-color: #f5f5f5 !important;
+}
+
+/* Cards and containers - dark theme */
+html.dark .bg-white, html.dark .bg-gray-50, html.dark .bg-primary-50, html.dark .bg-primary-100 {
+  background-color: #1a1a1a !important;
+}
+
+html.dark .bg-gray-800, html.dark .bg-gray-900, html.dark .dark\:bg-gray-800, html.dark .dark\:bg-gray-900 {
+  background-color: #1a1a1a !important;
+}
+
+/* Text colors - light theme */
+html.light .text-gray-900, html.light .text-gray-800, html.light .text-gray-700 {
+  color: #000000 !important;
+}
+
+html.light .text-gray-600, html.light .text-gray-500, html.light .text-gray-400 {
+  color: #333333 !important;
+}
+
+html.light .dark\:text-white, html.light .dark\:text-gray-100 {
+  color: #000000 !important;
+}
+
+html.light .dark\:text-gray-400, html.light .dark\:text-gray-300 {
+  color: #333333 !important;
+}
+
+/* Text colors - dark theme */
+html.dark .text-gray-900, html.dark .text-gray-800, html.dark .text-gray-700 {
+  color: #ffffff !important;
+}
+
+html.dark .text-gray-600, html.dark .text-gray-500, html.dark .text-gray-400 {
+  color: #cccccc !important;
+}
+
+html.dark .dark\:text-white, html.dark .dark\:text-gray-100 {
+  color: #ffffff !important;
+}
+
+html.dark .dark\:text-gray-400, html.dark .dark\:text-gray-300 {
+  color: #cccccc !important;
+}
+
+/* Borders - light theme */
+html.light .border-gray-300, html.light .border-gray-600, html.light .dark\:border-gray-600 {
+  border-color: #000000 !important;
+}
+
+/* Borders - dark theme */
+html.dark .border-gray-300, html.dark .border-gray-600, html.dark .dark\:border-gray-600 {
+  border-color: #333333 !important;
+}
+
+/* Shadows - monochrome for both themes */
+html.light .shadow-xl, html.light .shadow-lg, html.light .shadow-md, html.light .shadow-sm {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+html.dark .shadow-xl, html.dark .shadow-lg, html.dark .shadow-md, html.dark .shadow-sm {
+  box-shadow: 0 4px 6px -1px rgba(255, 255, 255, 0.05), 0 2px 4px -1px rgba(255, 255, 255, 0.03) !important;
+}

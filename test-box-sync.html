@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Box Sync Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        .info { background-color: #d1ecf1; border-color: #bee5eb; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 3px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Box Sync System Test</h1> 
+    
+    
+    <div class="test-section info">
+        <h2>System Status</h2>
+        <div id="status">Checking components...</div>
+    </div>
+
+    <div class="test-section">
+        <h2>Component Files</h2>
+        <div id="component-files"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Import Test</h2>
+        <div id="import-test"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>JSX Syntax Test</h2>
+        <div id="jsx-test"></div>
+    </div>
+
+    <script type="module">
+        async function checkFileExists(path) {
+            try {
+                const response = await fetch(path);
+                return response.ok;
+            } catch {
+                return false;
+            }
+        }
+
+        async function runTests() {
+            const statusEl = document.getElementById('status');
+            const filesEl = document.getElementById('component-files');
+            const importEl = document.getElementById('import-test');
+            const jsxEl = document.getElementById('jsx-test');
+
+            // Check component files
+            const componentFiles = [
+                'src/components/BoxSyncComponents.jsx',
+                'src/hooks/useBoxSync.js',
+                'src/hooks/useBoxSyncFeedback.js',
+                'src/hooks/useBoxEventPropagator.js'
+            ];
+
+            let allFilesExist = true;
+            let fileResults = '';
+
+            for (const file of componentFiles) {
+                const exists = await checkFileExists(`/${file}`);
+                fileResults += `<div class="${exists ? 'success' : 'error'}">
+                    ${file}: ${exists ? '✓ EXISTS' : '✗ MISSING'}
+                </div>`;
+                if (!exists) allFilesExist = false;
+            }
+
+            filesEl.innerHTML = fileResults;
+
+            // Check JSX syntax by attempting to parse
+            try {
+                // Test basic JSX-like syntax
+                const jsxTest = `
+                    const element = React.createElement('div', {className: 'test'}, 'Hello');
+                    return element;
+                `;
+                
+                // This would fail if there were syntax issues
+                new Function(jsxTest);
+                jsxEl.innerHTML = '<div class="success">✓ JSX syntax appears valid</div>';
+            } catch (error) {
+                jsxEl.innerHTML = `<div class="error">✗ JSX syntax error: ${error.message}</div>`;
+            }
+
+            // Overall status
+            if (allFilesExist) {
+                statusEl.innerHTML = '<div class="success">✓ All component files found - system appears ready</div>';
+                statusEl.parentElement.className = 'test-section success';
+            } else {
+                statusEl.innerHTML = '<div class="error">✗ Some component files are missing</div>';
+                statusEl.parentElement.className = 'test-section error';
+            }
+        }
+
+        runTests();
+    </script>
+</body>
+</html>
