@@ -49,23 +49,19 @@ export const useAuth = () => {
   }
 
   const signInWithGoogle = async () => {
-    // Use environment variable for redirect URL if available, otherwise use current origin
-    const redirectTo = import.meta.env.VITE_REDIRECT_URL || window.location.origin
-    
-    // Ensure no double slashes in the URL
-    const callbackUrl = redirectTo.endsWith('/') 
-      ? `${redirectTo}auth/callback` 
-      : `${redirectTo}/auth/callback`
-    
-    console.log('OAuth redirect URL:', callbackUrl)
-    
+    // The new AuthTokenProcessor can handle the callback on any page.
+    // We'll redirect to the dashboard, which is the main entry point after login.
+    const redirectUrl = import.meta.env.VITE_REDIRECT_URL || window.location.origin;
+
+    console.log('OAuth redirect URL:', redirectUrl);
+
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: callbackUrl,
+        redirectTo: redirectUrl,
       },
-    })
-    return { data, error }
+    });
+    return { data, error };
   }
 
   return {
