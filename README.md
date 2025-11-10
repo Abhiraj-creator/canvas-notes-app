@@ -1,181 +1,82 @@
-# Full Stack Notes App
+# Canvas Notes App
 
-A modern, full-stack notes application with real-time collaboration, canvas drawing capabilities, and beautiful animations.
+This is a full-stack note-taking application with a real-time collaborative canvas feature. It is built with React, Vite, and Supabase, and is designed to be deployed on Vercel.
 
-## Features
+## Getting Started
 
-- 📝 **Notes Management**: Create, edit, and delete notes with rich text support
-- 🎨 **Canvas Drawing**: Draw and create shapes using Excalidraw integration
-- 👥 **Real-time Collaboration**: See updates from other users in real-time
-- 🌓 **Dark/Light Theme**: Toggle between themes with smooth animations
-- ✨ **Animations**: GSAP animations with ScrollTrigger
-- 🔄 **Page Transitions**: Smooth page transitions with GSAP and React Router
-- 🎯 **Microinteractions**: Modern UI with Framer Motion animations
-- 🔐 **Authentication**: Secure authentication with Supabase Auth (Email & Google OAuth)
-- 💾 **Real-time Sync**: Automatic synchronization using Supabase Realtime
+To get started with the project, you will need to have Node.js and npm installed. You will also need a Supabase account.
 
-## Tech Stack
+### 1. Clone the Repository
 
-- **Frontend**: React (JSX) with Vite
-- **Styling**: Tailwind CSS
-- **Animations**: GSAP with ScrollTrigger, Framer Motion
-- **Page Transitions**: GSAP with React Router
-- **Backend**: Supabase (Auth, Database, Realtime)
-- **State Management**: Zustand
-- **Canvas**: Excalidraw
-- **Notifications**: React Hot Toast
+```bash
+git clone <repository-url>
+cd canvas-notes-app
+```
 
-## Setup Instructions
-
-### 1. Install Dependencies
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 2. Set up Supabase
+### 3. Set Up Environment Variables
 
-1. Create a new project at [supabase.com](https://supabase.com)
-2. Go to Settings > API and copy your URL and anon key
-3. Create a `.env` file in the root directory:
+Create a `.env.local` file in the root of the project and add the following environment variables:
 
-```env
-VITE_SUPABASE_URL=your_supabase_url_here
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+```
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+VITE_REDIRECT_URL=http://localhost:5173
 ```
 
-### 3. Create Database Tables
+You can find your Supabase URL and anon key in your Supabase project settings.
 
-Run these SQL commands in your Supabase SQL Editor (or use the `supabase-setup.sql` file):
-
-```sql
--- Create notes table
-CREATE TABLE notes (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  title TEXT,
-  content TEXT,
-  canvas_data JSONB,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
-);
-
--- Enable Row Level Security
-ALTER TABLE notes ENABLE ROW LEVEL SECURITY;
-
--- Create policy for users to only see their own notes
-CREATE POLICY "Users can view their own notes"
-  ON notes FOR SELECT
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can insert their own notes"
-  ON notes FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
-
-CREATE POLICY "Users can update their own notes"
-  ON notes FOR UPDATE
-  USING (auth.uid() = user_id);
-
-CREATE POLICY "Users can delete their own notes"
-  ON notes FOR DELETE
-  USING (auth.uid() = user_id);
-
--- Create index for faster queries
-CREATE INDEX notes_user_id_idx ON notes(user_id);
-CREATE INDEX notes_updated_at_idx ON notes(updated_at DESC);
-
--- Enable Realtime for notes table
-ALTER PUBLICATION supabase_realtime ADD TABLE notes;
-```
-
-### 4. Configure Authentication
-
-1. Enable Email authentication (usually enabled by default)
-2. Set Site URL and Redirect URLs in Supabase
-3. (Optional) Set up Google OAuth for social login
-
-📖 See `SETUP.md` for detailed authentication setup instructions
-
-### 5. Run the Development Server
+### 4. Run the Development Server
 
 ```bash
 npm run dev
 ```
 
-## Project Structure
-
-```
-src/
-├── components/          # React components
-│   ├── CanvasEditor.jsx
-│   ├── LoadingSpinner.jsx
-│   ├── NoteCard.jsx
-│   ├── NoteEditor.jsx
-│   ├── NotesList.jsx
-│   ├── ProtectedRoute.jsx
-│   └── ThemeToggle.jsx
-├── context/            # React context providers
-│   └── ThemeContext.jsx
-├── hooks/              # Custom React hooks
-│   ├── useAuth.js
-│   └── useNotes.js
-├── lib/                # Library configurations
-│   └── supabase.js
-├── pages/              # Page components
-│   ├── Dashboard.jsx
-│   ├── Login.jsx
-│   └── Signup.jsx
-├── store/              # State management
-│   └── useStore.js
-├── utils/              # Utility functions
-│   ├── animations.js
-│   └── barba.js
-├── App.jsx
-├── App.css
-├── main.jsx
-└── index.css
-```
-
-## Features in Detail
-
-### Real-time Collaboration
-
-The app uses Supabase Realtime to sync notes and canvas data across all connected users in real-time. Changes are automatically reflected without page refresh.
-
-### Canvas Drawing
-
-Integrated Excalidraw allows users to:
-- Draw freehand sketches
-- Create shapes and diagrams
-- Add text annotations
-- Export drawings
-
-### Theme Toggle
-
-Smooth theme transitions with GSAP animations. The theme preference is persisted in local storage.
-
-### Animations
-
-- GSAP ScrollTrigger for scroll-based animations
-- Framer Motion for component animations
-- Barba.js for page transitions
-- Microinteractions on buttons and cards
+This will start the development server at `http://localhost:5173`.
 
 ## Deployment
 
-### Build for Production
+This project is designed to be deployed on Vercel. The `vercel.json` file in the root of the project is configured to handle the build and routing for you.
 
-```bash
-npm run build
+### 1. Push to GitHub
+
+Commit your changes and push them to your GitHub repository.
+
+### 2. Import Project on Vercel
+
+Go to your Vercel dashboard and import the project from your GitHub repository.
+
+### 3. Configure Environment Variables
+
+In your Vercel project settings, add the following environment variables:
+
+```
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
+VITE_REDIRECT_URL=https://your-vercel-app-url.vercel.app
 ```
 
-### Deploy to Vercel/Netlify
+### 4. Deploy
 
-1. Push your code to GitHub
-2. Connect your repository to Vercel/Netlify
-3. Add environment variables
-4. Deploy!
+Vercel will automatically build and deploy your application. The `vercel.json` file will ensure that the build output is correctly configured and that all routes are rewritten to `index.html`.
 
-## License
+## Troubleshooting
 
-MIT
+### 404 Not Found on Vercel
+
+If you are seeing a 404 error on your deployed Vercel site, it is likely due to a misconfiguration in your Vercel project settings. The `vercel.json` file in this project is designed to prevent this issue, but if you are still experiencing it, please ensure that:
+
+1.  Your Vercel project's **Build & Development Settings** are configured correctly. The **Output Directory** should be set to `dist`.
+2.  Your `vercel.json` file is present in the root of your project and is correctly configured.
+
+### OAuth Redirect Issues
+
+If you are having issues with OAuth redirects, please ensure that:
+
+1.  Your **Redirect URLs** in your Supabase project's authentication settings are correctly configured. You should have your Vercel deployment URL (`https://your-vercel-app-url.vercel.app`) and your local development URL (`http://localhost:5173`) in the list.
+2.  Your `VITE_REDIRECT_URL` environment variable is correctly set in both your local `.env.local` file and your Vercel project settings.
