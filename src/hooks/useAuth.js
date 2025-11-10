@@ -49,10 +49,13 @@ export const useAuth = () => {
   }
 
   const signInWithGoogle = async () => {
+    // Use environment variable for redirect URL if available, otherwise use current origin
+    const redirectTo = import.meta.env.VITE_REDIRECT_URL || window.location.origin
+    
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/dashboard`,
+        redirectTo: `${redirectTo}/auth/callback`,
       },
     })
     return { data, error }

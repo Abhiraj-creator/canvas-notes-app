@@ -1,0 +1,19 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "routes": [
+    {
+      "src": "/auth/callback(.*)",
+      "dest": "/"
+    },
+    {
+      "src": "/dashboard(.*)",
+      "dest": "/"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/"
+    }
+  ]
+}
